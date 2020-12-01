@@ -1,0 +1,5 @@
+#!/bin/bash
+
+DB=$1
+
+psql -d $DB -a -f ../data/create_lims_db.sql
