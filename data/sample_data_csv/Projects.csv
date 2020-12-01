@@ -1,0 +1,4 @@
+id,title,goal,type,client_email,sop_id,member_id,cost_type
+1,Project 1,Covid 19,Virus Test,client1@nyu.edu,1,1,Monthly Test
+2,Project 2,HIV,Virus Test,client2@nyu.edu,1,2,Multiple Test
+3,Project 3,Ebola,Virus Test,client3@nyu.edu,2,3,Single Test

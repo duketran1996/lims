@@ -1,0 +1,4 @@
+name,address,industry_type,within_network
+Company 1,"123 Street 1, City 1, NY 12345",Technology,Yes
+Company 2,"456 Street 2, City 2, NY 67891",Medical,Yes
+Company 3,"789 Street 3, City 3, NY 24682",Fast Food,No
