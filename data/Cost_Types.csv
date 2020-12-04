@@ -1,0 +1,15 @@
+name,unit_cost,discounted_unit_cost
+Global polar metabolite test (low mass range),550,330
+Global polar metabolite test (mid mass range),750,450
+Global polar metabolite test (high mass range),900,540
+Global polar metabolite test (full mass range),950,570
+Global hydrophobic metabolite test (low mass range),350,210
+Global hydrophobic metabolite test (mid mass rang),450,270
+Global hydrophobic metabolite test (high mass range),550,330
+Global hydrophobic metabolite test (full mass range),750,450
+Custom targeted metabolite test (no analysis),1000,600
+Custom targeted metabolite test (with qualitative analysis),1200,720
+Custom targeted metabolite test (with quantitative analysis),1300,780
+Custom targeted metabolite test (with quantitative analysis and standard curve generation),1500,900
+Custom targeted metabolite test (full service),2000,1200
+Hybrid metabolite library survey ,250,150

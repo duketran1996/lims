@@ -1,0 +1,13 @@
+name,address,industry_type,within_network
+NYU Langone Health,"550 First Avenue, New York, NY, 10016",Hospital,TRUE
+New York University,"70 Washington Squre South, New York, NY, 10012",Academia,TRUE
+Harvard Univeristy,"Harvard University, Cambridge, MA, 02138",Academia,FALSE
+Boston University,"801 Massachusetts Avenue, Suite 400, Boston, MA, 02218",Academia,FALSE
+Regeneron,"7712 Woodside Ave,Portage, IN, 46368",Pharmateutical ,FALSE
+SynBio,"922 Amerige Dr. Tualatin, OR, 97062",Biotechnology,FALSE
+Thermo Scientific,"28 White Street, Little Rock, AR, 72209",Biotechnology,FALSE
+Columbia Univeristy Medical Center,"630 West 168th Street_New York, NY 10032",Hospital,FALSE
+PepsiCo,"9148 Laurel Lane, Midland, MI 48640",Food Industry,FALSE
+Merck,"270 NE. Tanglewood Avem, North Wales, PA 19454",Pharmateutical ,FALSE
+Waters Corporation,"5 West Brookside Lane, Apopka, FL 32703",Biotechnology,FALSE
+The Jackson Laboratory ,"2 Blue Spring Rd. Encino, CA 91316",Biotechnology,FALSE

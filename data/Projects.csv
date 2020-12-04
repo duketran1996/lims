@@ -1,0 +1,11 @@
+id,title,goal,type,client_email,sop_id,member_id,cost_type
+1,Global metabolomics survey for the bone healing process,Find unknown metabolites important to the bone healing process,Global Metabolomics,john.willis@nyulangone.org,1,8754674,Global polar metabolite test (full mass range)
+2,Global study for brain cell development,Global metabolomics survey to identify interest metabolites that affect Alzhimer disease progression   ,Global Metabolomics,dean.rodgers@nyulangone.org,2,5521895,Global hydrophobic metabolite test (full mass range)
+3,Foodome Project,Categority food beased on metabolite profile,Global Metabolomics,anne.stewart12@pepsi.com,8,5521895,Global hydrophobic metabolite test (full mass range)
+4,Ant metabolism ,Global survey for metabolites unique to ants,Global Metabolomics,terrell.harmon@nyulagone.org,3,5521895,Global polar metabolite test (full mass range)
+5,Brain tumor metabolism survey,Identify important metabolites for brain tumor development,Global Metabolomics,dean.rodgers@nyulangone.org,4,1125478,Global hydrophobic metabolite test (mid mass rang)
+6,Small molecule effect on brain tumor progression,Absolute quantification of the small molecules in brain tumor cells,Targeted Metabolomics,as1123@nyu.edu,5,2236547,Custom targeted metabolite test (full service)
+7,Ctric acid study,Isolate citric acid from hemolyzed plasma ,Targeted Metabolomics,sara_hill@harvard.edu,5,8754674,Custom targeted metabolite test (no analysis)
+8,Growth of hela cell in RPMI media,Study the oxygen consumption and related metabolites for cell in RMPI media,Global Metabolomics,edward@synbio.com,1,1123456,Global polar metabolite test (high mass range)
+9,Ctric acid in plasma samaples,Absolute quantification of citric acid in plasma samples,Targeted Metabolomics,sara_hill@harvard.edu,5,1123456,Custom targeted metabolite test (with quantitative analysis and standard curve generation)
+10,Seretonin and brain function ,Study the seretonin function in brain cells,Targeted Metabolomics,dean.rodgers@nyulangone.org,5,1125478,Custom targeted metabolite test (with quantitative analysis and standard curve generation)
