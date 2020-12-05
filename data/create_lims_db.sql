@@ -68,6 +68,7 @@ create table Projects
 	title varchar(128) not null,
 	goal varchar (1024),
 	type varchar(1024),
+	status varchar(34),
 	client_email varchar(128) not null,
 	foreign key (client_email) references Clients(email),
 	sop_id INTEGER not null,
@@ -76,6 +77,7 @@ create table Projects
 	foreign key(member_id) references Members(id),
 	cost_type varchar(1024) not null,
 	foreign key(cost_type) references Cost_Types(name)
+	
 );
 
 create table Samples
