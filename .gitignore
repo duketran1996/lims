@@ -1,4 +1,6 @@
 .DS_Store
+Makefile
+database.ini
 
 # Template python
 # Byte-compiled / optimized / DLL files
