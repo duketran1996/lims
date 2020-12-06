@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS Instruments;
 
 create table SOPs
 (
-	id INTEGER primary key,
+	id integer primary key,
 	SOP_description varchar(1024)
 );
 
@@ -26,7 +26,7 @@ create table Companies
 
 create table Members
 (
-	id INTEGER primary key,
+	id integer primary key,
 	name varchar(128) not null,
 	job_title varchar(128)
 );
@@ -40,7 +40,7 @@ create table Cost_Types
 
 create table Instruments
 (
-	id INTEGER primary key,
+	id integer primary key,
 	name varchar(128)
 );
 
@@ -55,7 +55,7 @@ create table Clients
 
 create table Funding_Method
 (
-	funding_type VARCHAR(120),
+	funding_type varchar(120),
 	amount integer,
 	client_email varchar(64),
 	primary key (client_email, funding_type),
@@ -64,16 +64,16 @@ create table Funding_Method
 
 create table Projects
 (
-	id INTEGER primary key,
+	id integer primary key,
 	title varchar(128) not null,
 	goal varchar (1024),
 	type varchar(1024),
 	status varchar(34),
 	client_email varchar(128) not null,
 	foreign key (client_email) references Clients(email),
-	sop_id INTEGER not null,
+	sop_id integer not null,
 	foreign key (sop_id) references SOPs(id),
-	member_id INTEGER not null,
+	member_id integer not null,
 	foreign key(member_id) references Members(id),
 	cost_type varchar(1024) not null,
 	foreign key(cost_type) references Cost_Types(name)
@@ -82,21 +82,21 @@ create table Projects
 
 create table Samples
 (
-	id INTEGER primary key,
+	id integer primary key,
 	name varchar(128) not null,
 	sample_group varchar(128),
 	type varchar(32),
 	amount integer,
 	amount_unit varchar(32),
-	project_id INTEGER not null,
+	project_id integer not null,
 	foreign key (project_id) references Projects(id)
 );
 
 create table SOP_uses_instruments
 (
-	id INTEGER,
-	sop_id INTEGER,
-	inst_id INTEGER,
+	id integer primary key,
+	sop_id integer,
+	inst_id integer,
 	foreign key (sop_id) references SOPs(id) on delete cascade,
 	foreign key (inst_id) references Instruments(id) on delete cascade
 );
