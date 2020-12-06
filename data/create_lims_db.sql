@@ -53,7 +53,7 @@ create table Clients
 	foreign key (company_name) references Companies(name)
 );
 
-create table Founding_Method
+create table Funding_Method
 (
 	funding_type VARCHAR(120),
 	amount integer,
@@ -108,7 +108,7 @@ create table SOP_uses_instruments
 \COPY Cost_Types FROM 'Cost_Types.csv' DELIMITER ',' CSV HEADER;
 \COPY Instruments FROM 'Instruments.csv' DELIMITER ',' CSV HEADER;
 \COPY Clients FROM 'Clients.csv' DELIMITER ',' CSV HEADER;
-\COPY Founding_Method FROM 'Founding_Method.csv' DELIMITER ',' CSV HEADER;
+\COPY Funding_Method FROM 'Funding_Method.csv' DELIMITER ',' CSV HEADER;
 \COPY Projects FROM 'Projects.csv' DELIMITER ',' CSV HEADER;
 \COPY Samples FROM 'Samples.csv' DELIMITER ',' CSV HEADER;
 \COPY SOP_uses_instruments FROM 'SOP_uses_Instruments.csv' DELIMITER ',' CSV HEADER;
