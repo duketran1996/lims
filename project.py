@@ -3,7 +3,7 @@ import psycopg2
 import streamlit as st
 from configparser import ConfigParser
 
-# This part of the code is refrenced from the demo.py in class to set up the configrations
+# This part of the code is refrenced from the demo.py from the lab to set up the configrations
 @st.cache
 def get_config(filename='database.ini', section='postgresql'):
     parser = ConfigParser()
@@ -133,40 +133,52 @@ if project_ID:
             st.table(df5)
 
 '## Lab Members Project Assginment'
-query_type = st.radio('Select query type for lab memeber workload information', ['All Projects', 'Historical Projects', 'Open Projects'])
+query_type = st.radio('Select query type for lab memeber workload information', ['All Projects', 'Historical Projects', 'Open Projects','Memebers without project assignment currently'])
 if query_type == 'Historical Projects':
-    output = 'processed_project_count'
+    all_members = ''
+    output = ', COUNT(p.id) AS processed_project_count'
     constraint = "WHERE p.status = 'Complete' OR p.status = 'Failed'"
+
 elif query_type == 'Open Projects':
-    output = 'open_project_count'
+    all_members = ''
+    output = ', COUNT(p.id) AS open_project_count'
     constraint = "WHERE p.status = 'In process'"
+
+elif query_type == 'Memebers without project assignment currently':
+    all_members = "(SELECT m.name, m.id, m.job_title AS title FROM members m) EXCEPT"
+    output = ''
+    constraint = "WHERE p.status = 'In process'"
+
 else:
-    output = 'all_project_count'
+    all_members = ''
+    output = ', COUNT(p.id) AS all_project_count'
     constraint = ''
 
-project_assignment_query = f"""SELECT m.name, m.id, m.job_title, COUNT(*) AS {output}
+project_assignment_query = f"""{all_members}    
+                    (SELECT m.name, m.id, m.job_title AS title {output}
                     FROM members m
                     JOIN projects p
                     ON m.id = p.member_id
                     {constraint}
                     GROUP BY m.name, m.id, m.job_title
-                    ORDER BY {output} DESC;
+                    ORDER BY COUNT(p.id) DESC);
                     """
 
 df6 = query_db(project_assignment_query)
 st.table(df6)
 
-show_detail = st.button('Show detail')
-if show_detail:
-    show_detail_query = f"""SELECT m.name, m.job_title, p.id AS project_id, p.title, p.goal, p.status
-                    FROM members m
-                    JOIN projects p
-                    ON m.id = p.member_id
-                    {constraint}
-                    ORDER BY m.name
-                    """
-    df7= query_db(show_detail_query)
-    st.table(df7)
+if query_type != 'Memebers without project assignment currently':
+    show_detail = st.button('Show detail')
+    if show_detail:
+        show_detail_query = f"""SELECT m.name, m.job_title, p.id AS project_id, p.title, p.goal, p.status
+                        FROM members m
+                        JOIN projects p
+                        ON m.id = p.member_id
+                        {constraint}
+                        ORDER BY m.name
+                        """
+        df7= query_db(show_detail_query)
+        st.table(df7)
 
 '## Instrument Status'
 instrument_query_options = st.selectbox('Please select one instrument usage report: ',['Historical instrument usage information', 'Current instrument usage information', 'List all unused instruments currently'])
