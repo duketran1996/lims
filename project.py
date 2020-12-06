@@ -169,8 +169,8 @@ if show_detail:
     st.table(df7)
 
 '## Instrument Status'
-instrument_status_query = st.selectbox('Please select one instrument usage report: ',['Show instrument usage information', 'List all unused instruments'])
-if instrument_status_query == 'Show instrument usage information':
+instrument_query_options = st.selectbox('Please select one instrument usage report: ',['Historical instrument usage information', 'Current instrument usage information', 'List all unused instruments currently'])
+if instrument_query_options == 'Historical instrument usage information':
     instrument_usage_query = """SELECT i.name, count(i.name) AS num_time_used
                                 FROM instruments i
                                 JOIN sop_uses_instruments sui
@@ -179,6 +179,17 @@ if instrument_status_query == 'Show instrument usage information':
                                 ON sui.sop_id = p.sop_id
                                 GROUP BY i.name
                                 ORDER BY num_time_used DESC;"""
+elif instrument_query_options == 'Current instrument usage information':
+    instrument_usage_query = """SELECT i.name, count(i.name) AS num_time_used
+                                FROM instruments i
+                                JOIN sop_uses_instruments sui
+                                ON i.id = sui.inst_id
+                                JOIN projects p
+                                ON sui.sop_id = p.sop_id
+                                WHERE p.status = 'In process'
+                                GROUP BY i.name
+                                ORDER BY num_time_used DESC;"""
+
 else:
     instrument_usage_query = """(SELECT i.name
                                 FROM instruments i)
@@ -188,7 +199,8 @@ else:
                                 JOIN sop_uses_instruments sui
                                 ON i.id = sui.inst_id
                                 JOIN projects p
-                                ON sui.sop_id = p.sop_id)
+                                ON sui.sop_id = p.sop_id
+                                WHERE p.status = 'In process');
                                 """
 df8= query_db(instrument_usage_query)
 st.table(df8)
