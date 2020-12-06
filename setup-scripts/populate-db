@@ -4,12 +4,13 @@ USERNAME=$1
 DB=$2
 PORT=$3
 
-cat ../data/sample_data_csv/SOPs.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY SOPs from STDIN CSV HEADER"
-cat ../data/sample_data_csv/Companies.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Companies from STDIN CSV HEADER"
-cat ../data/sample_data_csv/Members.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Members from STDIN CSV HEADER"
-cat ../data/sample_data_csv/Cost_Types.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Cost_Types from STDIN CSV HEADER"
-cat ../data/sample_data_csv/Instruments.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Instruments from STDIN CSV HEADER"
-cat ../data/sample_data_csv/Clients.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Clients from STDIN CSV HEADER"
-cat ../data/sample_data_csv/Financial_Transactions.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Financial_Transactions from STDIN CSV HEADER"
-cat ../data/sample_data_csv/Projects.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Projects from STDIN CSV HEADER"
-cat ../data/sample_data_csv/Samples.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Samples from STDIN CSV HEADER"
+cat ../data/SOPs.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY SOPs from STDIN CSV HEADER"
+cat ../data/Companies.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Companies from STDIN CSV HEADER"
+cat ../data/Members.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Members from STDIN CSV HEADER"
+cat ../data/Cost_Types.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Cost_Types from STDIN CSV HEADER"
+cat ../data/Instruments.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Instruments from STDIN CSV HEADER"
+cat ../data/Clients.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Clients from STDIN CSV HEADER"
+cat ../data/Funding_Method.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Funding_Method from STDIN CSV HEADER"
+cat ../data/Projects.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Projects from STDIN CSV HEADER"
+cat ../data/Samples.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY Samples from STDIN CSV HEADER"
+cat ../data/SOP_Uses_Instruments.csv | psql -U $USERNAME -d $DB -h localhost -p $PORT -c "COPY SOP_Uses_Instruments from STDIN CSV HEADER"

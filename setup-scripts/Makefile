@@ -1,6 +1,6 @@
-USERNAME=your-postgres-username
-DB=your-database-name
-PORT=your-port (ex: 5432)
+USERNAME=ductran
+DB=lims-db
+PORT=5432
 
 all: create populate
 

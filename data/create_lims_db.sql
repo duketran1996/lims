@@ -92,7 +92,7 @@ create table Samples
 	foreign key (project_id) references Projects(id)
 );
 
-create table SOP_uses_instruments
+create table SOP_Uses_Instruments
 (
 	id integer primary key,
 	sop_id integer,
@@ -101,15 +101,15 @@ create table SOP_uses_instruments
 	foreign key (inst_id) references Instruments(id) on delete cascade
 );
 
-
-\COPY SOPs FROM 'SOPs.csv' DELIMITER ',' CSV HEADER;
-\COPY Companies FROM 'Companies.csv' DELIMITER ',' CSV HEADER;
-\COPY Members FROM 'Members.csv' DELIMITER ',' CSV HEADER;
-\COPY Cost_Types FROM 'Cost_Types.csv' DELIMITER ',' CSV HEADER;
-\COPY Instruments FROM 'Instruments.csv' DELIMITER ',' CSV HEADER;
-\COPY Clients FROM 'Clients.csv' DELIMITER ',' CSV HEADER;
-\COPY Funding_Method FROM 'Funding_Method.csv' DELIMITER ',' CSV HEADER;
-\COPY Projects FROM 'Projects.csv' DELIMITER ',' CSV HEADER;
-\COPY Samples FROM 'Samples.csv' DELIMITER ',' CSV HEADER;
-\COPY SOP_uses_instruments FROM 'SOP_uses_Instruments.csv' DELIMITER ',' CSV HEADER;
+-- Import dummy data.
+-- \COPY SOPs FROM 'SOPs.csv' DELIMITER ',' CSV HEADER;
+-- \COPY Companies FROM 'Companies.csv' DELIMITER ',' CSV HEADER;
+-- \COPY Members FROM 'Members.csv' DELIMITER ',' CSV HEADER;
+-- \COPY Cost_Types FROM 'Cost_Types.csv' DELIMITER ',' CSV HEADER;
+-- \COPY Instruments FROM 'Instruments.csv' DELIMITER ',' CSV HEADER;
+-- \COPY Clients FROM 'Clients.csv' DELIMITER ',' CSV HEADER;
+-- \COPY Funding_Method FROM 'Funding_Method.csv' DELIMITER ',' CSV HEADER;
+-- \COPY Projects FROM 'Projects.csv' DELIMITER ',' CSV HEADER;
+-- \COPY Samples FROM 'Samples.csv' DELIMITER ',' CSV HEADER;
+-- \COPY SOP_Uses_Instruments FROM 'SOP_Uses_Instruments.csv' DELIMITER ',' CSV HEADER;
 
