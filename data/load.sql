@@ -94,7 +94,7 @@ create table Samples
 
 create table SOP_Uses_Instruments
 (
-	id serial primary key,
+	id integer primary key,
 	sop_id integer,
 	inst_id integer,
 	foreign key (sop_id) references SOPs(id) on delete cascade,

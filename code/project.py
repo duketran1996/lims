@@ -135,12 +135,19 @@ def insert_samples(table_name):
     amount_unit= st.text_input("Amount Unit", "")
 
     #Project input
-    all_projects_query = f"""
-                                SELECT id
-                                FROM projects;
-                            """
-    all_projects_id = query_db(all_projects_query)['id'].tolist()
-    project_id = st.selectbox('Belongs to project', all_projects_id)
+    all_projects_title_query = f"""
+                            SELECT title
+                            FROM projects;
+                        """
+    all_projects_title = query_db(all_projects_title_query)['title'].tolist()
+    projects_title = st.selectbox('This sample belongs to project', all_projects_title)
+
+    projects_id_query = f"""
+                        SELECT id
+                        FROM projects
+                        WHERE title = '{projects_title}';
+                    """
+    project_id = int(query_db(projects_id_query)['id'])
 
     if st.button('Submit'):
         table_query = f'INSERT INTO {table_name}(id, name, sample_group, type, amount, amount_unit, project_id) VALUES (\'{sample_id}\', \'{name}\', \'{sample_group}\', \'{sample_type}\', \'{amount}\', \'{amount_unit}\', \'{project_id}\');'
@@ -150,9 +157,46 @@ def insert_samples(table_name):
             st.success("Successfully insert into table " + table_name)
 
 def insert_sop_uses_instruments(table_name):
-    sample_id = st.text_input("Id", "")
-    sop_id = st.text_input("Standard Operating Protocols", "")
-    instr = st.text_input("Instrument", "")
+
+    #SOPs input
+    all_sops_query = f"""
+                            SELECT sop_description
+                            FROM sops;
+                        """
+    all_sops_desc = query_db(all_sops_query)['sop_description'].tolist()
+    sops_desc = st.selectbox('Standard Operating Protocols', all_sops_desc)
+
+    sops_id_query = f"""
+                        SELECT id
+                        FROM sops
+                        WHERE sop_description = '{sops_desc}';
+                    """
+    sop_id = int(query_db(sops_id_query)['id'])
+
+    #Instrument input
+    all_instruments_name_query = f"""
+                            SELECT name
+                            FROM instruments;
+                        """
+    all_instruments_name = query_db(all_instruments_name_query)['name'].tolist()
+    instruments_name = st.selectbox('Instruments', all_instruments_name)
+
+    instrument_id_query = f"""
+                        SELECT id
+                        FROM instruments
+                        WHERE name = '{instruments_name}';
+                    """
+    instrument_id = int(query_db(instrument_id_query)['id'])
+
+    if st.button('Submit'):
+        table_query = f'INSERT INTO {table_name}(id, sop_id, inst_id) VALUES ((SELECT MAX(id) FROM {table_name})+1, \'{sop_id}\', \'{instrument_id}\');'
+        st.write(table_query)
+        if insert_db(table_query):
+            st.error("Cannot insert " + table_name + ". Please check your input!")
+        else:
+            st.success("Successfully insert into table " + table_name)
+
+
 
 def insert_projects(table_name):
     proj_id = st.text_input("Project Id", "")
@@ -220,26 +264,17 @@ def insert_sops(table_name):
     sop_id = st.text_input("SOP Id", "")
     sop_description =  st.text_input("SOP Description", "")
 
+    if st.button('Submit'):
+        table_query = f'INSERT INTO {table_name}(id, SOP_description) VALUES (\'{sop_id}\', \'{sop_description}\');'
+        st.write(table_query)
+        if insert_db(table_query):
+            st.error("Cannot insert " + table_name + ". Please check your input!")
+        else:
+            st.success("Successfully insert into table " + table_name)
+
 
 # main part of the web app
 '# Metabolomics Core Laboratory Project Mangement System'
-
-'## Insert information'
-all_table_names_query = "SELECT table_name FROM information_schema.tables WHERE table_schema ='public';"
-all_table_names = query_db(all_table_names_query)['table_name'].tolist()
-table_name = st.selectbox('Choose a table to insert the data', all_table_names)
-options = {"clients" : insert_clients,
-            "companies": insert_companies,
-            "cost_types": insert_cost_types,
-            "members": insert_members,
-            "instruments": insert_instruments,
-            "funding_method": insert_funding_method,
-            "projects": insert_projects,
-            "samples": insert_samples,
-            "sop_uses_instruments": insert_sop_uses_instruments,
-            'sops': insert_sops
-}
-options[table_name](table_name)
 
 
 '## Table overview'
@@ -435,3 +470,20 @@ else:
                                 """
 df8= query_db(instrument_usage_query)
 st.table(df8)
+
+'## Insert information'
+all_table_names_query = "SELECT table_name FROM information_schema.tables WHERE table_schema ='public';"
+all_table_names = query_db(all_table_names_query)['table_name'].tolist()
+table_name = st.selectbox('Choose a table to insert the data', all_table_names)
+options = {"clients" : insert_clients,
+            "companies": insert_companies,
+            "cost_types": insert_cost_types,
+            "members": insert_members,
+            "instruments": insert_instruments,
+            "funding_method": insert_funding_method,
+            "projects": insert_projects,
+            "samples": insert_samples,
+            "sop_uses_instruments": insert_sop_uses_instruments,
+            'sops': insert_sops
+}
+options[table_name](table_name)
