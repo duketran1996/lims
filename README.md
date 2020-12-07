@@ -4,7 +4,8 @@ Laboratory information management system (LIMS) will allow the lab members to tr
 
 ## Requirement
 _Python 3\
-_PostgreSQL 12
+_PostgreSQL 12\
+_Streamlit
 
 ## Installation
 
@@ -44,9 +45,9 @@ dbname=yournetid-db
 user=yournetid
 ```
 
-Run the project by runnin lims.py located in the main folder.
+Run the project by running project.py located in the main folder.
 ```bash
-python3 lims.py
+streamlit run project.py
 ```
 
 ## Contributing
