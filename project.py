@@ -278,72 +278,78 @@ if sample_ID:
 '## Project ID lookup'
 project_ID = st.number_input("Please enter the project ID here", min_value = 1, step=1)
 if project_ID:
-    isDiscounted_query = f"""
-                            SELECT cp.within_network
+    sample_exist_check_query = f"SELECT * FROM samples WHERE project_id = {project_ID}"
+    df_check = query_db(sample_exist_check_query)
+    if df_check.empty:
+        st.error("This project has no sample assgined to it, please add the sample information in the sample table!")
+    else:
+        isDiscounted_query = f"""
+                                SELECT cp.within_network
+                                FROM projects p
+                                JOIN clients c
+                                ON p.client_email = c.email
+                                JOIN companies cp
+                                ON c.company_name = cp.name
+                                WHERE p.id = {project_ID}
+                                """
+        df3 = query_db(isDiscounted_query)
+        if df3.empty:
+            st.text("No matching Project ID found in database!")
+        else:
+            isDiscounted = df3['within_network'][0]
+
+            if isDiscounted == True :
+                unit_cost_type = 'discounted_unit_cost'
+                cost_note = "_discounted"
+            else:
+                unit_cost_type = 'unit_cost'
+                cost_note = "_full_price"
+
+            
+            project_query = f"""
+                            SELECT p.id, p.status, p.title, p.goal, p.type, p.sop_id,c.name AS client_name, m.name AS Assgined_to,
+                            COUNT(*) AS Total_Samples,
+                            (COUNT(*) * ct.{unit_cost_type}) AS Total_Cost{cost_note}
                             FROM projects p
+                            JOIN cost_types ct
+                            ON p.cost_type = ct.name
                             JOIN clients c
                             ON p.client_email = c.email
-                            JOIN companies cp
-                            ON c.company_name = cp.name
+                            JOIN members m
+                            ON p.member_id = m.id
+                            JOIN samples s
+                            ON p.id = s.project_id
                             WHERE p.id = {project_ID}
+                            GROUP BY p.id, c.name, m.name, ct.{unit_cost_type};
                             """
-    df3 = query_db(isDiscounted_query)
-    if df3.empty:
-        st.text("No matching Project ID found in database!")
-    else:
-        isDiscounted = df3['within_network'][0]
+            df4 = query_db(project_query)
+            st.table(df4)
 
-        if isDiscounted == True :
-            unit_cost_type = 'discounted_unit_cost'
-            cost_note = "_discounted"
-        else:
-            unit_cost_type = 'unit_cost'
-            cost_note = "_full_price"
-
-        project_query = f"""
-                        SELECT p.id, p.status, p.title, p.goal, p.type, p.sop_id,c.name AS client_name, m.name AS Assgined_to,
-                        COUNT(*) AS Total_Samples,
-                        (COUNT(*) * ct.{unit_cost_type}) AS Total_Cost{cost_note}
-                        FROM projects p
-                        JOIN cost_types ct
-                        ON p.cost_type = ct.name
-                        JOIN clients c
-                        ON p.client_email = c.email
-                        JOIN members m
-                        ON p.member_id = m.id
-                        JOIN samples s
-                        ON p.id = s.project_id
-                        WHERE p.id = {project_ID}
-                        GROUP BY p.id, c.name, m.name, ct.{unit_cost_type};
-                        """
-        df4 = query_db(project_query)
-        st.table(df4)
-
-        client_name = df4['client_name'][0]
-        project_cost = df4[f'total_cost{cost_note}'][0]
-        client_avaliable_funding_query = f"""SELECT c.name, sum(fm.amount) AS toatal_funding_amount
-                                FROM clients c
-                                JOIN funding_method fm
-                                ON c.email = fm.client_email
-                                WHERE c.name = '{client_name}'
-                                GROUP BY c.name;
-                                """
-        client_avaliable_funding = query_db(client_avaliable_funding_query)['toatal_funding_amount'][0]
-        if project_cost > client_avaliable_funding:
-            st.warning('Client does not have enough funding for this project')
-        else:
-            st.success('Project fully funded')
-
-        see_all_samples = st.button("See all samples")
-
-        if see_all_samples:
-            see_all_samples_query = f"""
-                                    SELECT s.id, s.name, s.sample_group, s.type, s.amount, s.amount_unit
-                                    FROM samples s
-                                    WHERE s.project_id = {project_ID};
+            client_name = df4['client_name'][0]
+            project_cost = df4[f'total_cost{cost_note}'][0]
+            client_avaliable_funding_query = f"""SELECT c.name, sum(fm.amount) AS toatal_funding_amount
+                                    FROM clients c
+                                    JOIN funding_method fm
+                                    ON c.email = fm.client_email
+                                    WHERE c.name = '{client_name}'
+                                    GROUP BY c.name;
                                     """
-            df5 = query_db(see_all_samples_query)
-            st.table(df5)
+            client_avaliable_funding = query_db(client_avaliable_funding_query)['toatal_funding_amount'][0]
+            if project_cost > client_avaliable_funding:
+                st.warning('Client does not have enough funding for this project')
+            else:
+                st.success('Project fully funded')
+
+            see_all_samples = st.button("See all samples")
+
+            if see_all_samples:
+                see_all_samples_query = f"""
+                                        SELECT s.id, s.name, s.sample_group, s.type, s.amount, s.amount_unit
+                                        FROM samples s
+                                        WHERE s.project_id = {project_ID};
+                                        """
+                df5 = query_db(see_all_samples_query)
+                st.table(df5)
 
 '## Lab Members Project Assginment'
 query_type = st.radio('Select query type for lab memeber workload information', ['All Projects', 'Historical Projects', 'Open Projects','Memebers without project assignment currently'])
