@@ -190,7 +190,6 @@ def insert_sop_uses_instruments(table_name):
 
     if st.button('Submit'):
         table_query = f'INSERT INTO {table_name}(id, sop_id, inst_id) VALUES ((SELECT MAX(id) FROM {table_name})+1, \'{sop_id}\', \'{instrument_id}\');'
-        st.write(table_query)
         if insert_db(table_query):
             st.error("Cannot insert " + table_name + ". Please check your input!")
         else:
@@ -254,7 +253,6 @@ def insert_projects(table_name):
 
     if st.button('Submit'):
         table_query = f'INSERT INTO {table_name}(id, title, goal, type, status, client_email, sop_id, member_id, cost_type) VALUES (\'{proj_id}\', \'{title}\', \'{goal}\', \'{proj_type}\', \'{status}\', \'{client_email}\', \'{sop_id}\', \'{member_id}\', \'{cost_type}\');'
-        st.write(table_query)
         if insert_db(table_query):
             st.error("Cannot insert " + table_name + ". Please check your input!")
         else:
@@ -266,7 +264,6 @@ def insert_sops(table_name):
 
     if st.button('Submit'):
         table_query = f'INSERT INTO {table_name}(id, SOP_description) VALUES (\'{sop_id}\', \'{sop_description}\');'
-        st.write(table_query)
         if insert_db(table_query):
             st.error("Cannot insert " + table_name + ". Please check your input!")
         else:
@@ -313,23 +310,25 @@ if sample_ID:
 '## Project ID lookup'
 project_ID = st.number_input("Please enter the project ID here", min_value = 1, step=1)
 if project_ID:
-    sample_exist_check_query = f"SELECT * FROM samples WHERE project_id = {project_ID}"
-    df_check = query_db(sample_exist_check_query)
-    if df_check.empty:
-        st.error("This project has no sample assgined to it, please add the sample information in the sample table!")
+    isDiscounted_query = f"""
+                            SELECT cp.within_network
+                            FROM projects p
+                            JOIN clients c
+                            ON p.client_email = c.email
+                            JOIN companies cp
+                            ON c.company_name = cp.name
+                            WHERE p.id = {project_ID}
+                            """
+    df3 = query_db(isDiscounted_query)
+    if df3.empty:
+        st.text("No matching Project ID found in database!")
     else:
-        isDiscounted_query = f"""
-                                SELECT cp.within_network
-                                FROM projects p
-                                JOIN clients c
-                                ON p.client_email = c.email
-                                JOIN companies cp
-                                ON c.company_name = cp.name
-                                WHERE p.id = {project_ID}
-                                """
-        df3 = query_db(isDiscounted_query)
-        if df3.empty:
-            st.text("No matching Project ID found in database!")
+        sample_exist_check_query = f"SELECT * FROM samples WHERE project_id = {project_ID}"
+        df_check = query_db(sample_exist_check_query)
+        sample_exist_check_query = f"SELECT * FROM samples WHERE project_id = {project_ID}"
+        df_check = query_db(sample_exist_check_query)
+        if df_check.empty:
+            st.error("This project has no sample assgined to it, please add the sample information in the sample table!")
         else:
             isDiscounted = df3['within_network'][0]
 
