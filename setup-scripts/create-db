@@ -2,4 +2,4 @@
 
 DB=$1
 
-psql -d $DB -a -f ../data/create_lims_db.sql
+psql -d $DB -a -f ../code/schema.sql
